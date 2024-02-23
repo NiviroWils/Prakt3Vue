@@ -84,5 +84,11 @@ let app = new Vue({
             const taskToMove = this.inProgressTasks.splice(taskIndex, 1)[0];
             this.testingTasks.push(taskToMove);
         },
+        moveToCompleted(taskIndex) {
+            const taskToMove = this.testingTasks.splice(taskIndex, 1)[0];
+            taskToMove.isOverdue = new Date(taskToMove.deadline) < new Date();
+            this.completedTasks.push(taskToMove);
+        }
+
     }
 })

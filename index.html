@@ -101,6 +101,20 @@
             </div>
         </div>
     </div>
+    <div class="column">
+        <h2>Выполненные задачи</h2>
+        <div v-for="(task, index) in completedTasks" :key="index">
+            <div v-if="editedTaskIndex !== index || editedColumn !== 'completedTasks'">
+                <h3>{{ task.title }}</h3>
+                <p> {{ task.description }}</p>
+                <p>Дата создания {{ task.createdAt }}</p>
+                <p>Дэдлайн {{ task.deadline }}</p>
+                <p>Последние изменения {{ task.lastChange }}</p>
+                <p class="overdueDeadline" v-if="task.isOverdue">Задача просрочена</p>
+                <p class="completedDeadline" v-else>Задача выполнена в срок! Вы молодцы!</p>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
