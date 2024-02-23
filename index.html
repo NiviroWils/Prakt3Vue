@@ -3,115 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/main.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" >
     <script defer src="js/vue.js"></script>
     <script defer src="js/main.js"></script>
     <title>Kanban Board</title>
 </head>
 <body>
 <div id="app">
-    <div class="addForm">
-        <form @submit.prevent="addNewTask">
-            <h2>Новая задача</h2>
-            <label for="title">Заголовок</label>
-            <input id="title" type="text" v-model="newTask.title">
-            <label for="description">Описание</label>
-            <textarea id="description" v-model="newTask.description"></textarea>
-            <label for="deadline">Дэдлайн</label>
-            <input id="deadline" type="date" v-model="newTask.deadline">
-            <button type="submit">Добавить задачу</button>
-        </form>
-    </div>
-    <div class="column">
-        <h2>Запланированные задачи</h2>
-        <div v-for="(task, index) in plannedTasks" :key="index">
-            <div v-if="editedTaskIndex !== index || editedColumn !== 'plannedTasks'">
-                <h3>{{ task.title }}</h3>
-                <p>{{ task.description }}</p>
-                <p>Creation Date: {{ task.createdAt }}</p>
-                <p>Deadline: {{ task.deadline }}</p>
-                <p>Last Modification: {{ task.lastChange }}</p>
-                <button class="edit-button" @click="editTask(index, 'plannedTasks')">Edit</button>
-            </div>
-            <div v-else>
-                <form @submit.prevent="saveEditedTask(index)">
-                    <label for="editTitle">Заголовок</label>
-                    <input id="editTitle" type="text" v-model="editedTask.title">
-                    <label for="editDescription">Описание</label>
-                    <textarea id="editDescription" v-model="editedTask.description"></textarea>
-                    <label for="editDeadline">Дэдлайн</label>
-                    <input id="editDeadline" type="date" v-model="editedTask.deadline">
-                    <button type="submit">Сохранить</button>
-                </form>
-            </div>
-            <button class="delete-button" @click="removeTask(index)">Delete</button>
-            <button class="move-button" @click="moveToInProgress(index)">Move to In Progress</button>
-        </div>
-    </div>
-    <div class="column">
-        <h2>В процессе(работе)</h2>
-        <div v-for="(task, index) in inProgressTasks" :key="index">
-            <div v-if="editedTaskIndex !== index || editedColumn !== 'inProgressTasks'">
-                <h3>{{ task.title }}</h3>
-                <p>{{ task.description }}</p>
-                <p>Дата создания {{ task.createdAt }}</p>
-                <p>Дэдлайн {{ task.deadline }}</p>
-                <p>Последние изменения  {{ task.lastChange }}</p>
-                <button class="edit-button" @click="editTask(index, 'inProgressTasks')">Edit</button>
-                <button class="move-button" @click="moveToTesting(index)">Move to Testing</button>
-            </div>
-            <div v-else>
-                <form @submit.prevent="saveEditedTask(index)">
-                    <label for="editTitle">Заголовок</label>
-                    <input id="editTitle" type="text" v-model="editedTask.title">
-                    <label for="editDescription">Описание</label>
-                    <textarea id="editDescription" v-model="editedTask.description"></textarea>
-                    <label for="editDeadline">Дэдлайн</label>
-                    <input id="editDeadline" type="date" v-model="editedTask.deadline">
-                    <button type="submit">Сохранить</button>
-                </form>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col">
+                <div class="addForm">
+                    <form @submit.prevent="addNewTask">
+                        <h2>Новая задача</h2>
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Заголовок</label>
+                            <input id="title" type="text" class="form-control" v-model="newTask.title">
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Описание</label>
+                            <textarea id="description" class="form-control" v-model="newTask.description"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="deadline" class="form-label">Дэдлайн</label>
+                            <input id="deadline" type="date" class="form-control" v-model="newTask.deadline">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Добавить задачу</button>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="column">
-        <h2>Тестируется</h2>
-        <div v-for="(task, index) in testingTasks" :key="index">
-            <div v-if="editedTaskIndex !== index || editedColumn !== 'testingTasks'">
-                <h3>{{ task.title }}</h3>
-                <p> {{ task.description }}</p>
-                <p>Дата создания {{ task.createdAt }}</p>
-                <p>Дэдлайн {{ task.deadline }}</p>
-                <p>Последние изменения {{ task.lastChange }}</p>
-                <button class="edit-button" @click="editTask(index, 'testingTasks')">Edit</button>
-                <button class="move-button" @click="moveToCompleted(index)">Move to Completed</button>
-                <button class="move-button" @click="returnToInProgress(index)">Return to In Progress</button>
-                <label for="returnReason"><br>Return Reason:</label>
-                <input class="return-reason-input" id="returnReason" type="text" v-model="task.returnReason">
+        <div class="row mt-5">
+            <div class="col">
+                <div class="column">
+                    <h2>Запланированные задачи</h2>
+                    <div v-for="(task, index) in plannedTasks" :key="index">
+                        <div v-if="editedTaskIndex !== index || editedColumn !== 'plannedTasks'">
+                            <h3>{{ task.title }}</h3>
+                            <p>{{ task.description }}</p>
+                            <p>Дата создания {{ task.createdAt }}</p>
+                            <p>Дэдлайн {{ task.deadline }}</p>
+                            <p>Последние изменения {{ task.lastChange }}</p>
+                            <button class="edit-button btn btn-primary" @click="editTask(index, 'plannedTasks')">Редактировать</button>
+                        </div>
+                        <div v-else>
+                            <form @submit.prevent="saveEditedTask(index)">
+                                <div class="mb-3">
+                                    <label for="editTitle" class="form-label">Заголовок</label>
+                                    <input id="editTitle" type="text" class="form-control" v-model="editedTask.title">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editDescription" class="form-label">Описание</label>
+                                    <textarea id="editDescription" class="form-control" v-model="editedTask.description"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editDeadline" class="form-label">Дэдлайн</label>
+                                    <input id="editDeadline" type="date" class="form-control" v-model="editedTask.deadline">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Сохранить</button>
+                            </form>
+                        </div>
+                        <button class="delete-button btn btn-danger" @click="removeTask(index)">Удалить</button>
+                        <button class="move-button btn btn-warning" @click="moveToInProgress(index)">В работу</button>
+                    </div>
+                </div>
             </div>
-            <div v-else>
-                <form @submit.prevent="saveEditedTask(index, 'testingTasks')">
-                    <label for="editTitle">Заголовок</label>
-                    <input id="editTitle" type="text" v-model="editedTask.title">
-                    <label for="editDescription">Описание</label>
-                    <textarea id="editDescription" v-model="editedTask.description"></textarea>
-                    <label for="editDeadline">Дэдлайн</label>
-                    <input id="editDeadline" type="date" v-model="editedTask.deadline">
-                    <button type="submit">Сохранить</button>
-                </form>
+            <div class="col">
+                <div class="column">
+                    <h2>В процессе(работе)</h2>
+                    <div v-for="(task, index) in inProgressTasks" :key="index">
+                        <div v-if="editedTaskIndex !== index || editedColumn !== 'inProgressTasks'">
+                            <h3>{{ task.title }}</h3>
+                            <p>{{ task.description }}</p>
+                            <p>Дата создания {{ task.createdAt }}</p>
+                            <p>Дэдлайн {{ task.deadline }}</p>
+                            <p>Последние изменения  {{ task.lastChange }}</p>
+                            <button class="edit-button btn btn-primary" @click="editTask(index, 'inProgressTasks')">Редактировать</button>
+                            <button class="move-button btn btn-warning" @click="moveToTesting(index)">В тестирование</button>
+                        </div>
+                        <div v-else>
+                            <form @submit.prevent="saveEditedTask(index)">
+                                <div class="mb-3">
+                                    <label for="editTitle" class="form-label">Заголовок</label>
+                                    <input id="editTitle" type="text" class="form-control" v-model="editedTask.title">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editDescription" class="form-label">Описание</label>
+                                    <textarea id="editDescription" class="form-control" v-model="editedTask.description"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editDeadline" class="form-label">Дэдлайн</label>
+                                    <input id="editDeadline" type="date" class="form-control" v-model="editedTask.deadline">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Сохранить</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="column">
-        <h2>Выполненные задачи</h2>
-        <div v-for="(task, index) in completedTasks" :key="index">
-            <div v-if="editedTaskIndex !== index || editedColumn !== 'completedTasks'">
-                <h3>{{ task.title }}</h3>
-                <p> {{ task.description }}</p>
-                <p>Дата создания {{ task.createdAt }}</p>
-                <p>Дэдлайн {{ task.deadline }}</p>
-                <p>Последние изменения {{ task.lastChange }}</p>
-                <p class="overdueDeadline" v-if="task.isOverdue">Задача просрочена</p>
-                <p class="completedDeadline" v-else>Задача выполнена в срок! Вы молодцы!</p>
+            <div class="col">
+                <div class="column">
+                    <h2>Тестируется</h2>
+                    <div v-for="(task, index) in testingTasks" :key="index">
+                        <div v-if="editedTaskIndex !== index || editedColumn !== 'testingTasks'">
+                            <h3>{{ task.title }}</h3>
+                            <p> {{ task.description }}</p>
+                            <p>Дата создания {{ task.createdAt }}</p>
+                            <p>Дэдлайн {{ task.deadline }}</p>
+                            <p>Последние изменения {{ task.lastChange }}</p>
+                            <button class="edit-button btn btn-primary" @click="editTask(index, 'testingTasks')">Редактировать</button>
+                            <button class="move-button btn btn-warning" @click="moveToCompleted(index)">В завершенное</button>
+                            <button class="move-button btn btn-warning" @click="returnToInProgress(index)">Вернуть в работу</button>
+                            <label for="returnReason"><br>Return Reason:</label>
+                            <input class="return-reason-input form-control" id="returnReason" type="text" v-model="task.returnReason">
+                        </div>
+                        <div v-else>
+                            <form @submit.prevent="saveEditedTask(index, 'testingTasks')">
+                                <div class="mb-3">
+                                    <label for="editTitle" class="form-label">Заголовок</label>
+                                    <input id="editTitle" type="text" class="form-control" v-model="editedTask.title">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editDescription" class="form-label">Описание</label>
+                                    <textarea id="editDescription" class="form-control" v-model="editedTask.description"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editDeadline" class="form-label">Дэдлайн</label>
+                                    <input id="editDeadline" type="date" class="form-control" v-model="editedTask.deadline">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Сохранить</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="column">
+                    <h2>Выполненные задачи</h2>
+                    <div v-for="(task, index) in completedTasks" :key="index">
+                        <div v-if="editedTaskIndex !== index || editedColumn !== 'completedTasks'">
+                            <h3>{{ task.title }}</h3>
+                            <p> {{ task.description }}</p>
+                            <p>Дата создания {{ task.createdAt }}</p>
+                            <p>Дэдлайн {{ task.deadline }}</p>
+                            <p>Последние изменения {{ task.lastChange }}</p>
+                            <p class="overdueDeadline" v-if="task.isOverdue">Задача просрочена</p>
+                            <p class="completedDeadline" v-else>Задача выполнена в срок! Вы молодцы!</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
