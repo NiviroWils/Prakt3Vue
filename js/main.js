@@ -56,6 +56,17 @@ let app = new Vue({
                 tasks: []
             }
         },
+        editForm(taskIndex) {
+            this[this.editedColumn][taskIndex] = {...this.editedTask, lastChange: new Date().toLocaleString()};
+            this.editedTask = null;
+            this.editedTaskIndex = null;
+            this.editedColumn = null;
+        },
+        editTask(taskIndex, column) {
+            this.editedTask = {...this[column][taskIndex]};
+            this.editedTaskIndex = taskIndex;
+            this.editedColumn = column;
+        },
 
     }
 })
