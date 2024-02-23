@@ -67,6 +67,8 @@ let app = new Vue({
             this.editedTaskIndex = taskIndex;
             this.editedColumn = column;
         },
-
+        removeTask(taskIndex) {
+            this.plannedTasks.splice(taskIndex, 1);
+        },
     }
 })

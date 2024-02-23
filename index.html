@@ -44,8 +44,11 @@
                     <button type="submit">Сохранить</button>
                 </form>
             </div>
+            <button class="delete-button" @click="removeTask(index)">Delete</button>
+            <button class="move-button" @click="moveToInProgress(index)">Move to In Progress</button>
         </div>
     </div>
+
 </div>
 </body>
 </html>
