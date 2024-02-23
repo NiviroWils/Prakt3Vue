@@ -60,15 +60,18 @@ let app = new Vue({
                     .map(task => ({ name: task, completed: false }));
             }
 
-            this.plannedTasks.push({...this.newTask});
+            const taskId = Date.now(); // Уникальный идентификатор
+            this.newTask.id = taskId;
+
+            this.plannedTasks.push({ ...this.newTask });
             this.newTask = {
                 title: '',
                 description: '',
                 deadline: '',
                 createdAt: new Date().toLocaleString(),
                 lastChange: null,
-                tasks: []
-            }
+                tasks: [],
+            };
             this.saveTasksToLocalStorage();
         },
         editForm(taskIndex) {
@@ -118,16 +121,23 @@ let app = new Vue({
                 return;
             }
 
-            if (this.taskReturnHistory[task.id]) {
-                this.taskReturnHistory[task.id].push(task.returnReason);
-            } else {
-                this.taskReturnHistory[task.id] = [task.returnReason];
-            }
+            const taskId = task.id;
 
-            const taskToMove = this.testingTasks.splice(taskIndex, 1)[0];
+            if (this.taskReturnHistory[taskId]) {
+                this.taskReturnHistory[taskId].push(task.returnReason);
+            } else {
+                this.taskReturnHistory[taskId] = [task.returnReason];
+            }
+            
+            const taskToMove = { ...task, lastChange: new Date().toLocaleString() };
+            this.testingTasks.splice(taskIndex, 1);
             this.inProgressTasks.push(taskToMove);
+
             this.saveTasksToLocalStorage();
         },
+
+
+
         saveTasksToLocalStorage() {
             const tasks = {
                 plannedTasks: this.plannedTasks,

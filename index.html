@@ -78,6 +78,12 @@
                             <p>Дата создания {{ task.createdAt }}</p>
                             <p>Дэдлайн {{ task.deadline }}</p>
                             <p>Последние изменения  {{ task.lastChange }}</p>
+                            <div v-if="taskReturnHistory[task.id]">
+                                <p>Причины возврата:</p>
+                                <ul>
+                                    <li v-for="(reason, historyIndex) in taskReturnHistory[task.id]" :key="historyIndex">{{ reason }}</li>
+                                </ul>
+                            </div>
                             <button class="edit-button btn btn-primary" @click="editTask(index, 'inProgressTasks')">Редактировать</button>
                             <button class="move-button btn btn-warning" @click="moveToTesting(index)">В тестирование</button>
                         </div>
@@ -110,11 +116,17 @@
                             <p> {{ task.description }}</p>
                             <p>Дата создания {{ task.createdAt }}</p>
                             <p>Дэдлайн {{ task.deadline }}</p>
+                            <div v-if="taskReturnHistory[task.id]">
+                                <p>Return History:</p>
+                                <ul>
+                                    <li v-for="(reason, historyIndex) in taskReturnHistory[task.id]" :key="historyIndex">{{ reason }}</li>
+                                </ul>
+                            </div>
                             <p>Последние изменения {{ task.lastChange }}</p>
                             <button class="edit-button btn btn-primary" @click="editTask(index, 'testingTasks')">Редактировать</button>
                             <button class="move-button btn btn-warning" @click="moveToCompleted(index)">В завершенное</button>
                             <button class="move-button btn btn-warning" @click="returnToInProgress(index)">Вернуть в работу</button>
-                            <label for="returnReason"><br>Return Reason:</label>
+                            <label for="returnReason"><br>Причины возврата:</label>
                             <input class="return-reason-input form-control" id="returnReason" type="text" v-model="task.returnReason">
                         </div>
                         <div v-else>
@@ -147,6 +159,12 @@
                             <p>Дата создания {{ task.createdAt }}</p>
                             <p>Дэдлайн {{ task.deadline }}</p>
                             <p>Последние изменения {{ task.lastChange }}</p>
+                            <div v-if="taskReturnHistory[task.id]">
+                                <p>Причины возврата:</p>
+                                <ul>
+                                    <li v-for="(reason, historyIndex) in taskReturnHistory[task.id]" :key="historyIndex">{{ reason }}</li>
+                                </ul>
+                            </div>
                             <p class="overdueDeadline" v-if="task.isOverdue">Задача просрочена</p>
                             <p class="completedDeadline" v-else>Задача выполнена в срок! Вы молодцы!</p>
                         </div>
