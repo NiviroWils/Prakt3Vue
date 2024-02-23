@@ -74,5 +74,15 @@ let app = new Vue({
             const taskToMove = this.plannedTasks.splice(taskIndex, 1)[0];
             this.inProgressTasks.push(taskToMove);
         },
+        saveEditedTask(taskIndex) {
+            this[this.editedColumn][taskIndex] = { ...this.editedTask, lastChange: new Date().toLocaleString() };
+            this.editedTask = null;
+            this.editedTaskIndex = null;
+            this.editedColumn = null;
+        },
+        moveToTesting(taskIndex) {
+            const taskToMove = this.inProgressTasks.splice(taskIndex, 1)[0];
+            this.testingTasks.push(taskToMove);
+        },
     }
 })
