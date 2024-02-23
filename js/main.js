@@ -70,5 +70,9 @@ let app = new Vue({
         removeTask(taskIndex) {
             this.plannedTasks.splice(taskIndex, 1);
         },
+        moveToInProgress(taskIndex) {
+            const taskToMove = this.plannedTasks.splice(taskIndex, 1)[0];
+            this.inProgressTasks.push(taskToMove);
+        },
     }
 })

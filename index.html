@@ -34,7 +34,7 @@
                 <button class="edit-button" @click="editTask(index, 'plannedTasks')">Edit</button>
             </div>
             <div v-else>
-                <form @submit.prevent="saveEditedTask(index, 'testingTasks')">
+                <form @submit.prevent="saveEditedTask(index)">
                     <label for="editTitle">Заголовок</label>
                     <input id="editTitle" type="text" v-model="editedTask.title">
                     <label for="editDescription">Описание</label>
@@ -46,6 +46,31 @@
             </div>
             <button class="delete-button" @click="removeTask(index)">Delete</button>
             <button class="move-button" @click="moveToInProgress(index)">Move to In Progress</button>
+        </div>
+    </div>
+    <div class="column">
+        <h2>В процессе(работе)</h2>
+        <div v-for="(task, index) in inProgressTasks" :key="index">
+            <div v-if="editedTaskIndex !== index || editedColumn !== 'inProgressTasks'">
+                <h3>{{ task.title }}</h3>
+                <p>{{ task.description }}</p>
+                <p>Дата создания {{ task.createdAt }}</p>
+                <p>Дэдлайн {{ task.deadline }}</p>
+                <p>Последние изменения  {{ task.lastChange }}</p>
+                <button class="edit-button" @click="editTask(index, 'inProgressTasks')">Edit</button>
+                <button class="move-button" @click="moveToTesting(index)">Move to Testing</button>
+            </div>
+            <div v-else>
+                <form @submit.prevent="saveEditedTask(index)">
+                    <label for="editTitle">Заголовок</label>
+                    <input id="editTitle" type="text" v-model="editedTask.title">
+                    <label for="editDescription">Описание</label>
+                    <textarea id="editDescription" v-model="editedTask.description"></textarea>
+                    <label for="editDeadline">Дэдлайн</label>
+                    <input id="editDeadline" type="date" v-model="editedTask.deadline">
+                    <button type="submit">Сохранить</button>
+                </form>
+            </div>
         </div>
     </div>
 
