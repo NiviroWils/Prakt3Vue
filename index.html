@@ -1,13 +1,27 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/main.css">
+    <script defer src="js/vue.js"></script>
+    <script defer src="js/main.js"></script>
+    <title>Kanban Board</title>
 </head>
 <body>
-
+<div id="app">
+    <div class="addForm">
+        <form @submit.prevent="addNewTask">
+            <h2>Новая задача</h2>
+            <label for="title">Заголовок</label>
+            <input id="title" type="text" v-model="newTask.title">
+            <label for="description">Описание</label>
+            <textarea id="description" v-model="newTask.description"></textarea>
+            <label for="deadline">Дэдлайн:</label>
+            <input id="deadline" type="date" v-model="newTask.deadline">
+            <button type="submit">Добавить задачу</button>
+        </form>
+    </div>
+</div>
 </body>
 </html>
