@@ -91,15 +91,15 @@
                             <form @submit.prevent="saveEditedTask(index)">
                                 <div class="mb-3">
                                     <label for="editTitle" class="form-label">Заголовок</label>
-                                    <input id="editTitle" type="text" class="form-control" v-model="editedTask.title">
+                                    <input  type="text" class="form-control" v-model="editedTask.title">
                                 </div>
                                 <div class="mb-3">
                                     <label for="editDescription" class="form-label">Описание</label>
-                                    <textarea id="editDescription" class="form-control" v-model="editedTask.description"></textarea>
+                                    <textarea class="form-control" v-model="editedTask.description"></textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label for="editDeadline" class="form-label">Дэдлайн</label>
-                                    <input id="editDeadline" type="date" class="form-control" v-model="editedTask.deadline">
+                                    <input type="date" class="form-control" v-model="editedTask.deadline">
                                 </div>
                                 <button type="submit" class="btn btn-primary">Сохранить</button>
                             </form>
@@ -133,15 +133,15 @@
                             <form @submit.prevent="saveEditedTask(index, 'testingTasks')">
                                 <div class="mb-3">
                                     <label for="editTitle" class="form-label">Заголовок</label>
-                                    <input id="editTitle" type="text" class="form-control" v-model="editedTask.title">
+                                    <input type="text" class="form-control" v-model="editedTask.title">
                                 </div>
                                 <div class="mb-3">
                                     <label for="editDescription" class="form-label">Описание</label>
-                                    <textarea id="editDescription" class="form-control" v-model="editedTask.description"></textarea>
+                                    <textarea class="form-control" v-model="editedTask.description"></textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label for="editDeadline" class="form-label">Дэдлайн</label>
-                                    <input id="editDeadline" type="date" class="form-control" v-model="editedTask.deadline">
+                                    <input  type="date" class="form-control" v-model="editedTask.deadline">
                                 </div>
                                 <button type="submit" class="btn btn-primary">Сохранить</button>
                             </form>
