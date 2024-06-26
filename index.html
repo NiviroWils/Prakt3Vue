@@ -11,29 +11,39 @@
 <body>
 <div id="app">
     <div class="container mt-5">
-        <div class="row">
-            <div class="col">
-                <div class="addForm">
+        <button @click="openModal" class="btn btn-primary" type="button">Добавить задачу</button>
+
+        <div id="modal" class="modal" tabindex="-1" role="dialog" v-if="showAddModal" style="display: block;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Новая задача</h5>
+                        <button type="button" class="btn-close" @click="closeModal"></button>
+                    </div>
                     <form @submit.prevent="addNewTask">
-                        <h2>Новая задача</h2>
-                        <div class="mb-3">
-                            <label for="title" class="form-label">Заголовок</label>
-                            <input id="title" type="text" class="form-control" v-model="newTask.title">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="modalTitle" class="form-label">Заголовок</label>
+                                <input type="text" class="form-control" id="modalTitle" v-model="newTask.title">
+                            </div>
+                            <div class="mb-3">
+                                <label for="modalDescription" class="form-label">Описание</label>
+                                <textarea class="form-control" id="modalDescription" v-model="newTask.description"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="modalDeadline" class="form-label">Дедлайн</label>
+                                <input type="date" class="form-control" id="modalDeadline" v-model="newTask.deadline">
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="description" class="form-label">Описание</label>
-                            <textarea id="description" class="form-control" v-model="newTask.description"></textarea>
+                        <div class="modal-footer">
+<!--                            <button type="button" class="btn btn-secondary" @click="closeModal">Отмена</button>-->
+                            <button type="submit" class="btn btn-primary">Добавить</button>
                         </div>
-                        <div class="mb-3">
-                            <label for="deadline" class="form-label">Дэдлайн</label>
-                            <input id="deadline" type="date" class="form-control" v-model="newTask.deadline">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Добавить задачу</button>
                     </form>
                 </div>
             </div>
         </div>
-        <div class="row mt-5">
+        <div class="row mt-3">
             <div class="col">
                 <div class="column">
                     <h2>Запланированные задачи</h2>
@@ -83,6 +93,8 @@
                                 <ul>
                                     <li v-for="(reason, historyIndex) in taskReturnHistory[task.id]" :key="historyIndex">{{ reason }}</li>
                                 </ul>
+                                <p>Решение:</p>
+                                <input class="return-reason-input form-control" id="solution" type="text" v-model="task.solution">
                             </div>
                             <button class="edit-button btn btn-primary" @click="editTask(index, 'inProgressTasks')">Редактировать</button>
                             <button class="move-button btn btn-warning" @click="moveToTesting(index)">В тестирование</button>
@@ -121,13 +133,16 @@
                                 <ul>
                                     <li v-for="(reason, historyIndex) in taskReturnHistory[task.id]" :key="historyIndex">{{ reason }}</li>
                                 </ul>
+                                <p>Решение: {{task.solution}}</p>
                             </div>
+
                             <p>Последние изменения {{ task.lastChange }}</p>
                             <button class="edit-button btn btn-primary" @click="editTask(index, 'testingTasks')">Редактировать</button>
                             <button class="move-button btn btn-warning" @click="moveToCompleted(index)">В завершенное</button>
                             <button class="move-button btn btn-warning" @click="returnToInProgress(index)">Вернуть в работу</button>
                             <label for="returnReason"><br>Причины возврата:</label>
                             <input class="return-reason-input form-control" id="returnReason" type="text" v-model="task.returnReason">
+
                         </div>
                         <div v-else>
                             <form @submit.prevent="saveEditedTask(index, 'testingTasks')">
@@ -164,6 +179,7 @@
                                 <ul>
                                     <li v-for="(reason, historyIndex) in taskReturnHistory[task.id]" :key="historyIndex">{{ reason }}</li>
                                 </ul>
+                                <p>Решение: {{task.solution}}</p>
                             </div>
                             <p class="overdueDeadline" v-if="task.isOverdue">Задача просрочена</p>
                             <p class="completedDeadline" v-else>Задача выполнена в срок! Вы молодцы!</p>
@@ -176,3 +192,4 @@
 </div>
 </body>
 </html>
+

@@ -2,10 +2,12 @@ let app = new Vue({
     el: '#app',
     data(){
         return {
+            showAddModal: false,
             newTask: {
                 title: '',
                 description: '',
                 deadline: '',
+                solution:'',
                 createdAt: new Date().toLocaleString(),
                 lastChange: null,
                 returnReason: null,
@@ -37,6 +39,12 @@ let app = new Vue({
         }
     },
     methods:{
+        openModal(){
+            this.showAddModal = true
+      },
+        closeModal(){
+    this.showAddModal = false
+     },
         addNewTask() {
             if (!this.newTask.title) {
                 alert('Укажите заголовок');
@@ -104,8 +112,20 @@ let app = new Vue({
             this.saveTasksToLocalStorage();
         },
         moveToTesting(taskIndex) {
+            const task = this.testingTasks[taskIndex];
             const taskToMove = this.inProgressTasks.splice(taskIndex, 1)[0];
             this.testingTasks.push(taskToMove);
+
+            const taskId = task.id;
+            if (!task.solution) {
+                alert('Укажите решение');
+
+            }
+            if (this.taskReturnHistory[taskId]) {
+                this.taskReturnHistory[taskId].push(task.solution);
+            } else {
+                this.taskReturnHistory[taskId] = [task.solution];
+            }
             this.saveTasksToLocalStorage();
         },
         moveToCompleted(taskIndex) {
@@ -128,7 +148,7 @@ let app = new Vue({
             } else {
                 this.taskReturnHistory[taskId] = [task.returnReason];
             }
-            
+
             const taskToMove = { ...task, lastChange: new Date().toLocaleString() };
             this.testingTasks.splice(taskIndex, 1);
             this.inProgressTasks.push(taskToMove);
@@ -136,8 +156,23 @@ let app = new Vue({
             this.saveTasksToLocalStorage();
         },
 
-
-
+        // returnSolution(){
+        //     if (!task.returnSolution) {
+        //         alert('Укажите решение');
+        //     }
+        //     const taskId = task.id;
+        //     if (this.taskReturnHistory[taskId]) {
+        //         this.taskReturnHistory[taskId].push(task.solution);
+        //     } else {
+        //         this.taskReturnHistory[taskId].push(task.solution);
+        //     }
+        //
+        //     const taskToMove = { ...task, lastChange: new Date().toLocaleString() };
+        //     this.testingTasks.splice(taskIndex, 1);
+        //     this.inProgressTasks.push(taskToMove);
+        //
+        //     this.saveTasksToLocalStorage();
+        // },
         saveTasksToLocalStorage() {
             const tasks = {
                 plannedTasks: this.plannedTasks,
@@ -146,6 +181,7 @@ let app = new Vue({
                 completedTasks: this.completedTasks,
                 taskReturnHistory: this.taskReturnHistory
             };
+            this.closeModal();
             localStorage.setItem('tasks', JSON.stringify(tasks));
         },
     }
